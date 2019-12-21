@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PasswordStore
 {
-    internal class MainWindowView
+    internal class MainWindowViewModel
     {
 
         private string _plainText = "initial Text";
 
 
-        internal string PlainText
+        public string PlainText
         {
             get { return _plainText; }
             set

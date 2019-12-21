@@ -46,7 +46,7 @@
         </Menu>
 
         <Label Grid.Row="1" Margin="0,0,-0.333,1">_To encrypt:</Label>
-        <TextBox Grid.Row="2" Text="{Binding PlainText, Mode= TwoWay}" Margin="0,0,-0.333,0"/>
+        <TextBox Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-0.333,0"/>
 
         <Button HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Click="btnSave_Click" Width="100">Save</Button>
         <Button HorizontalAlignment="Right" Grid.Column="1" Grid.Row="3" Click="btnSave_Click" Width="100" Margin="0,0,-0.333,0">Load</Button>

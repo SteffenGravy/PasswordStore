@@ -15,26 +15,34 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.IO;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace PasswordStore
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        MainWindowViewModel mainWindowVielModel = new MainWindowViewModel();
 
-        MainWindowView mainWindowView = new MainWindowView();
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = mainWindowView;
+            DataContext = mainWindowVielModel;
         }
 
         public void program_Save(object sender, RoutedEventArgs e)
         {
-            mainWindowView.PlainText = "abc";
+            mainWindowVielModel.PlainText = "abc";
+            OnPropertyChanged("PlainText");
         }
 
 
