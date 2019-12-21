@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.IO;
+using System.ComponentModel;
 
 namespace PasswordStore
 {
@@ -23,16 +24,17 @@ namespace PasswordStore
     public partial class MainWindow : Window
     {
 
+        MainWindowView mainWindowView = new MainWindowView();
+
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = mainWindowView;
         }
-
-        PasswordStoreData passwordStore = new PasswordStoreData();
 
         public void program_Save(object sender, RoutedEventArgs e)
         {
-            
+            mainWindowView.PlainText = "abc";
         }
 
 
@@ -40,7 +42,9 @@ namespace PasswordStore
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             if (saveFileDialog.ShowDialog() == true)
-                File.WriteAllBytes(saveFileDialog.FileName, passwordStore.toStore);
+                File.WriteAllBytes(saveFileDialog.FileName, new byte[] { }
+                // Todo: write data here
+                );
         }
 
         public void about_Click(object sender, RoutedEventArgs e)

@@ -10,6 +10,8 @@ namespace PasswordStore
     {
         public byte[] toStore = new byte[] { };
 
+        public string plainText { get; set; }
+
 
     }
 }
