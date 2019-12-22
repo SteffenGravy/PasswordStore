@@ -11,6 +11,11 @@ namespace PasswordStore
 
         private string _plainText = "initial Text";
 
+        private PasswordStoreData passwordStoreData =  new PasswordStoreData();
+
+
+        public byte[] BytesToStore => passwordStoreData.GetBytesToStore(_plainText);
+
 
         public string PlainText
         {

@@ -33,6 +33,7 @@ namespace PasswordStore
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,9 +51,7 @@ namespace PasswordStore
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             if (saveFileDialog.ShowDialog() == true)
-                File.WriteAllBytes(saveFileDialog.FileName, new byte[] { }
-                // Todo: write data here
-                );
+                File.WriteAllBytes(saveFileDialog.FileName, mainWindowVielModel.BytesToStore);
         }
 
         public void about_Click(object sender, RoutedEventArgs e)
