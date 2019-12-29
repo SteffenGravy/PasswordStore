@@ -1,77 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.IO;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Windows;
 
 namespace PasswordStore
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        MainWindowViewModel mainWindowVielModel = new MainWindowViewModel();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = mainWindowVielModel;
+            DataContext = mainWindowViewModel;
         }
 
         public void program_Save(object sender, RoutedEventArgs e)
         {
-            mainWindowVielModel.PlainText = "abc";
-            OnPropertyChanged("PlainText");
+            mainWindowViewModel.Save();   
         }
-
 
         public void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            if (saveFileDialog.ShowDialog() == true)
-                File.WriteAllBytes(saveFileDialog.FileName, mainWindowVielModel.BytesToStore);
+            mainWindowViewModel.Save();
         }
 
         public void about_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Steffen L.", "Contributors");
+            System.Windows.Forms.MessageBox.Show("Steffen L.", "Contributors");
         }
 
         public void program_Exit(object sender, RoutedEventArgs e)
         {
+            if (!mainWindowViewModel.IsSaved)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to save?", "Save to file", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Yes)
+                {
+                    mainWindowViewModel.Save();
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
             Close();
         }
 
         public void program_Open(object sender, RoutedEventArgs e)
         {
-            // TODO: open a file and load it
+            mainWindowViewModel.Load();
         }
 
         public void program_SaveAndExit(object sender, RoutedEventArgs e)
         {
-
+            mainWindowViewModel.Save();
+            Close();
         }
     }
 }

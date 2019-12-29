@@ -8,8 +8,7 @@ namespace PasswordStore
 {
     public class PasswordStoreData
     {
-
-        public byte[] GetBytesToStore(string plainText)
+        public byte[] Encrypt(string plainText, string masterPassword)
         {
             var result = Encoding.ASCII.GetBytes(plainText);
 
@@ -17,5 +16,13 @@ namespace PasswordStore
 
             return result;
         }
+
+        public string Decrypt(byte[] bytes, string masterPassword)
+        {
+            string result = "";
+            // TODO: encrypt
+            return result;
+        }
+
     }
 }
