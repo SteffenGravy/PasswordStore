@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.Win32;
 using System.IO;
+using Microsoft.VisualBasic;
+using System.Threading;
 
 namespace PasswordStore
 {
@@ -19,6 +21,7 @@ namespace PasswordStore
 
         private PasswordStoreData passwordStoreData =  new PasswordStoreData();
 
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -28,11 +31,13 @@ namespace PasswordStore
 
         public void Save()
         {
+            var masterPassword = RunMasterPasswordRequest();
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             if(saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllBytes(saveFileDialog.FileName, passwordStoreData.Encrypt(PlainText, RunMasterPasswordRequest()));
+                File.WriteAllBytes(saveFileDialog.FileName, passwordStoreData.Encrypt(PlainText, masterPassword));
             }
 
             IsSaved = true;
@@ -46,19 +51,22 @@ namespace PasswordStore
                 CheckFileExists = true,
 
             };
+            var bytes = new byte[] { };
             if (openFileDialog.ShowDialog() == true)
             {
-                var bytes = File.ReadAllBytes(openFileDialog.FileName);
-                PlainText = passwordStoreData.Decrypt(bytes, RunMasterPasswordRequest());
+                bytes = File.ReadAllBytes(openFileDialog.FileName);
             }
 
+            var masterPassword = RunMasterPasswordRequest();
+            PlainText = passwordStoreData.Decrypt(bytes, masterPassword);
             IsSaved = false;
         }
 
         private string RunMasterPasswordRequest()
         {
-            var result = MessageBox.Show("Please enter the master password", "Enter master password");
-            return result.ToString();
+            var masterPasswordRequest = new MasterPasswordRequestDialog();
+            masterPasswordRequest.Show();
+            return masterPasswordRequest.masterPasswordCmd.Password;
         }
 
         public string PlainText

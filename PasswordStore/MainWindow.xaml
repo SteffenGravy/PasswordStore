@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PasswordStore"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="10,0" MinWidth="100" MinHeight="100">
@@ -13,8 +12,9 @@
         </Grid.Background>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition >
+            <ColumnDefinition Width="365*" >
             </ColumnDefinition>
+            <ColumnDefinition Width="409*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
             </RowDefinition>
         </Grid.RowDefinitions>
 
-        <Menu Grid.Row="0" Margin="0,0,-0.333,0">
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
 
             <MenuItem Height ="20" Width="60" Header="_Program">
                 <MenuItem Header="_Open" Click="program_Open"></MenuItem>
@@ -45,11 +45,11 @@
             </MenuItem>
         </Menu>
 
-        <Label Grid.Row="1" Margin="0,0,-0.333,1">_To encrypt:</Label>
-        <TextBox Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-0.333,0"/>
+        <Label Grid.Row="1" Margin="0,0,0,1" Grid.ColumnSpan="2">_To encrypt:</Label>
+        <TextBox Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-1,0" Grid.ColumnSpan="2"/>
 
         <Button HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Click="btnSave_Click" Width="100">Save</Button>
-        <Button HorizontalAlignment="Right" Grid.Column="1" Grid.Row="3" Click="btnSave_Click" Width="100" Margin="0,0,-0.333,0">Load</Button>
+        <Button HorizontalAlignment="Right" Grid.Column="1" Grid.Row="3" Click="btnSave_Click" Width="100">Load</Button>
 
     </Grid>
 </Window>
