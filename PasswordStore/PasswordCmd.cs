@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace PasswordStore
 {
-    public class MasterPasswordCmd : ICommand
+    public class PasswordCmd : ICommand
     {
         public string Password { get; set; }
 

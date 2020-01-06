@@ -17,15 +17,26 @@ namespace PasswordStore
     /// <summary>
     /// Interaction logic for PasswordBox.xaml
     /// </summary>
-    public partial class MasterPasswordRequestDialog : Window
+    public partial class PasswordRequest : Window
     {
-        public MasterPasswordCmd masterPasswordCmd { get; set; }
+        public PasswordCmd pswCmd { get; set; }
 
-        public MasterPasswordRequestDialog()
+        public PasswordRequest()
         {
             InitializeComponent();
             DataContext = this;
-            masterPasswordCmd = new MasterPasswordCmd();
+            pswCmd = new PasswordCmd();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(pswCmd.Password))
+            {
+                MessageBox.Show("The master password cannot be empty.", "Invalid master password");
+                return;
+            }
+            
+            Close();
         }
     }
 }

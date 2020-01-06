@@ -21,7 +21,6 @@ namespace PasswordStore
 
         private PasswordStoreData passwordStoreData =  new PasswordStoreData();
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -32,6 +31,11 @@ namespace PasswordStore
         public void Save()
         {
             var masterPassword = RunMasterPasswordRequest();
+
+            if (string.IsNullOrEmpty(masterPassword))
+            {
+                return;
+            }
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
@@ -58,15 +62,25 @@ namespace PasswordStore
             }
 
             var masterPassword = RunMasterPasswordRequest();
+            if (string.IsNullOrEmpty(masterPassword))
+            {
+                return;
+            }
+
             PlainText = passwordStoreData.Decrypt(bytes, masterPassword);
             IsSaved = false;
         }
 
         private string RunMasterPasswordRequest()
         {
-            var masterPasswordRequest = new MasterPasswordRequestDialog();
-            masterPasswordRequest.Show();
-            return masterPasswordRequest.masterPasswordCmd.Password;
+            var masterPasswordRequest = new PasswordRequest();
+
+            string result = string.Empty;
+            if (masterPasswordRequest.ShowDialog() == false) 
+            {
+                result = masterPasswordRequest.pswCmd.Password;
+            }
+            return result;
         }
 
         public string PlainText
