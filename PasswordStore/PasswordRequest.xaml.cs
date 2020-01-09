@@ -26,9 +26,10 @@ namespace PasswordStore
             InitializeComponent();
             DataContext = this;
             pswCmd = new PasswordCmd();
+            pswCmd.PasswordSet += CloseIfPasswordIsNotEmpty;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseIfPasswordIsNotEmpty()
         {
             if (string.IsNullOrEmpty(pswCmd.Password))
             {

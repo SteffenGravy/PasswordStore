@@ -14,11 +14,15 @@ namespace PasswordStore
 
         public event EventHandler CanExecuteChanged;
 
+        public event Action PasswordSet;
+
         public bool CanExecute(object parameter) => true;
+
         public void Execute(object parameter)
         {
             PasswordBox passwordBox = (PasswordBox)parameter;
             Password = passwordBox.Password;
+            PasswordSet();
         }
     }
 }

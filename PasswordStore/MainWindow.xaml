@@ -46,10 +46,10 @@
         </Menu>
 
         <Label Grid.Row="1" Margin="0,0,0,1" Grid.ColumnSpan="2">_To encrypt:</Label>
-        <TextBox Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-1,0" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tb" Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-1,0" Grid.ColumnSpan="2"/>
 
         <Button HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" Click="btnSave_Click" Width="100">Save</Button>
-        <Button HorizontalAlignment="Right" Grid.Column="1" Grid.Row="3" Click="btnSave_Click" Width="100">Load</Button>
+        <Button HorizontalAlignment="Right" Grid.Column="1" Grid.Row="3" Click="btnLoad_Click" Width="100">Load</Button>
 
     </Grid>
 </Window>

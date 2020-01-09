@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.Win32;
 using System.IO;
-using Microsoft.VisualBasic;
-using System.Threading;
 
 namespace PasswordStore
 {
@@ -19,7 +11,9 @@ namespace PasswordStore
 
         public bool IsSaved { get; private set; } = false;
 
-        private PasswordStoreData passwordStoreData =  new PasswordStoreData();
+        private string lastFileName = string.Empty;
+
+        private SecurityController securityController =  new SecurityController();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,12 +31,22 @@ namespace PasswordStore
                 return;
             }
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-            if(saveFileDialog.ShowDialog() == true)
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
-                File.WriteAllBytes(saveFileDialog.FileName, passwordStoreData.Encrypt(PlainText, masterPassword));
+                DefaultExt = ".pwdf",
+                FileName = lastFileName
+            };
+
+            if (string.IsNullOrEmpty(saveFileDialog.FileName))
+            {
+                return;
             }
+
+            saveFileDialog.ShowDialog();
+
+            lastFileName = saveFileDialog.FileName;
+
+            File.WriteAllText(lastFileName, securityController.Encrypt(masterPassword, PlainText));
 
             IsSaved = true;
         }
@@ -53,12 +57,13 @@ namespace PasswordStore
             {
                 DefaultExt = ".pwdf",
                 CheckFileExists = true,
-
+                FileName = lastFileName
             };
-            var bytes = new byte[] { };
-            if (openFileDialog.ShowDialog() == true)
+            
+            openFileDialog.ShowDialog();
+            if (string.IsNullOrEmpty(openFileDialog.FileName))
             {
-                bytes = File.ReadAllBytes(openFileDialog.FileName);
+                return;
             }
 
             var masterPassword = RunMasterPasswordRequest();
@@ -67,25 +72,22 @@ namespace PasswordStore
                 return;
             }
 
-            PlainText = passwordStoreData.Decrypt(bytes, masterPassword);
+            string text = File.ReadAllText(openFileDialog.FileName);
+            PlainText = securityController.Decrypt(masterPassword, text);
             IsSaved = false;
         }
 
         private string RunMasterPasswordRequest()
         {
             var masterPasswordRequest = new PasswordRequest();
-
-            string result = string.Empty;
-            if (masterPasswordRequest.ShowDialog() == false) 
-            {
-                result = masterPasswordRequest.pswCmd.Password;
-            }
+            masterPasswordRequest.ShowDialog(); 
+            string result = masterPasswordRequest.pswCmd.Password;
             return result;
         }
 
         public string PlainText
         {
-            get { return _plainText; }
+            get => _plainText;
             set
             {
                 if (value != _plainText)

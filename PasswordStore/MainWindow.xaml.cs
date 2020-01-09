@@ -13,6 +13,18 @@ namespace PasswordStore
         {
             InitializeComponent();
             DataContext = mainWindowViewModel;
+
+            DataObject.AddPastingHandler(tb, OnPaste);
+        }
+
+        private void OnPaste(object sender, DataObjectPastingEventArgs e)
+        {
+            var isText = e.SourceDataObject.GetDataPresent(DataFormats.UnicodeText, true);
+            if (!isText) return;
+
+            var text = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
+
+            mainWindowViewModel.PlainText = text;
         }
 
         public void program_Save(object sender, RoutedEventArgs e)
@@ -25,6 +37,11 @@ namespace PasswordStore
             mainWindowViewModel.Save();
         }
 
+        public void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowViewModel.Load();
+        }
+        
         public void about_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("Steffen L.", "Contributors");
