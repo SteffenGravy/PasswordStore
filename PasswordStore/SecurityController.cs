@@ -7,7 +7,7 @@ namespace PasswordStore
 {
     class SecurityController
     {
-        public string Encrypt(string key, string data)
+        public static string Encrypt(string key, string data)
         {
             string encData = null;
             byte[][] keys = GetHashKeys(key);
@@ -17,7 +17,7 @@ namespace PasswordStore
             return encData;
         }
 
-        public string Decrypt(string key, string data)
+        public static string Decrypt(string key, string data)
         {
             byte[][] keys = GetHashKeys(key);
 
@@ -26,7 +26,7 @@ namespace PasswordStore
             return decData;
         }
 
-        private byte[][] GetHashKeys(string key)
+        private static byte[][] GetHashKeys(string key)
         {
             byte[][] result = new byte[2][];
             Encoding enc = Encoding.UTF8;

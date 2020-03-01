@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 
 namespace PasswordStore
@@ -23,7 +17,7 @@ namespace PasswordStore
 
             if (e.Args.Length > 0 && File.Exists(e.Args[0]))
             {
-                mainWindow.mainWindowViewModel.LoadFile(e.Args[0]);
+                mainWindow.LoadFile(e.Args[0]);
             }
 
             mainWindow.Show();

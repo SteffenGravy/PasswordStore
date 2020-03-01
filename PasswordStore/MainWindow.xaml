@@ -19,13 +19,13 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto">
+            <RowDefinition Height="20">
             </RowDefinition >
             <RowDefinition Height="30">
             </RowDefinition >
-            <RowDefinition Height="340">
+            <RowDefinition Height="*">
             </RowDefinition>
-            <RowDefinition Height="Auto">
+            <RowDefinition Height="20">
             </RowDefinition>
         </Grid.RowDefinitions>
 
