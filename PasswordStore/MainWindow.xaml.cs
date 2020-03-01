@@ -7,7 +7,7 @@ namespace PasswordStore
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+        internal MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         public MainWindow()
         {

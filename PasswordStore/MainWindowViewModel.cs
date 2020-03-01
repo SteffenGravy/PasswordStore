@@ -50,7 +50,6 @@ namespace PasswordStore
                 return;
             }
 
-
             lastFileName = saveFileDialog.FileName;
 
             try
@@ -82,13 +81,18 @@ namespace PasswordStore
                 return;
             }
 
+            LoadFile(openFileDialog.FileName);
+        }
+
+        public void LoadFile(string fileName)
+        {
             var masterPassword = RunMasterPasswordRequest();
             if (string.IsNullOrEmpty(masterPassword))
             {
                 return;
             }
 
-            string text = File.ReadAllText(openFileDialog.FileName);
+            string text = File.ReadAllText(fileName);
             try
             {
                 PlainText = securityController.Decrypt(masterPassword, text);
