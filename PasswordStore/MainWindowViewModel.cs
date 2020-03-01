@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Win32;
 using System.IO;
 using System;
+using System.Windows;
 
 namespace PasswordStore
 {
@@ -12,6 +13,8 @@ namespace PasswordStore
 
         private const string InitialDirectory = @"c:\passwords";
         private const string Filter = "PasswordStore files (*.pwdf)|*.pwdf| All files (*.*)|*.*";
+
+        private const string AppName = "PasswordStore";
 
         public bool IsSaved { get; private set; } = false;
 
@@ -102,7 +105,6 @@ namespace PasswordStore
                 System.Windows.MessageBox.Show("Error: wrong master password.");
                 return;
             }
-            IsSaved = false;
         }
 
         private string RunMasterPasswordRequest()
@@ -111,6 +113,41 @@ namespace PasswordStore
             masterPasswordRequest.ShowDialog(); 
             string result = masterPasswordRequest.pswCmd.Password;
             return result;
+        }
+
+        public void CheckIsSaved()
+        {
+            if (!IsSaved && !string.IsNullOrEmpty(PlainText))
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to save?", AppName, MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Save();
+                }
+            }
+        }
+
+        public void CheckClear()
+        {
+            if (string.IsNullOrEmpty(PlainText))
+            {
+                return;
+            }
+            MessageBoxResult result = MessageBox.Show("Do you really want to clear all content?", AppName, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                PlainText = string.Empty;
+            }
+        }
+
+        public bool CheckExit()
+        {
+            MessageBoxResult result = MessageBox.Show("Do you really want to exit?", AppName, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                return true;
+            }
+            return false;
         }
 
         public string PlainText

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace PasswordStore
 {
@@ -15,6 +16,20 @@ namespace PasswordStore
             DataContext = mainWindowViewModel;
 
             DataObject.AddPastingHandler(tb, OnPaste);
+
+            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+        }
+
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                if (mainWindowViewModel.CheckExit())
+                {
+                    mainWindowViewModel.CheckIsSaved();
+                    Close();
+                }
+            }
         }
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
@@ -38,7 +53,7 @@ namespace PasswordStore
         }
         public void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            mainWindowViewModel.PlainText = string.Empty;
+            mainWindowViewModel.CheckClear();
         }
 
         public void btnLoad_Click(object sender, RoutedEventArgs e)
@@ -53,18 +68,7 @@ namespace PasswordStore
 
         public void program_Exit(object sender, RoutedEventArgs e)
         {
-            if (!mainWindowViewModel.IsSaved)
-            {
-                MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to save?", "Save to file", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Yes)
-                {
-                    mainWindowViewModel.Save();
-                }
-                else if (result == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
-            }
+            mainWindowViewModel.CheckIsSaved();
             Close();
         }
 
