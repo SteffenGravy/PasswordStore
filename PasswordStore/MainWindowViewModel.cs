@@ -78,6 +78,11 @@ namespace PasswordStore
             IsSaved = false;
         }
 
+        public void Clear()
+        {
+            PlainText = string.Empty;
+        }
+
         private string RunMasterPasswordRequest()
         {
             var masterPasswordRequest = new PasswordRequest();

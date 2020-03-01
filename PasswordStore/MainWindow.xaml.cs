@@ -36,6 +36,11 @@ namespace PasswordStore
         {
             mainWindowViewModel.Save();
         }
+        public void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowViewModel.Clear();
+        }
+
 
         public void btnLoad_Click(object sender, RoutedEventArgs e)
         {
