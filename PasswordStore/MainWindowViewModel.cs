@@ -36,13 +36,14 @@ namespace PasswordStore
                 DefaultExt = ".pwdf",
                 FileName = lastFileName
             };
+            
+            saveFileDialog.ShowDialog();
 
             if (string.IsNullOrEmpty(saveFileDialog.FileName))
             {
                 return;
             }
 
-            saveFileDialog.ShowDialog();
 
             lastFileName = saveFileDialog.FileName;
 
