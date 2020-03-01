@@ -12,27 +12,16 @@ namespace PasswordStore
             string encData = null;
             byte[][] keys = GetHashKeys(key);
 
-            try
-            {
-                encData = EncryptStringToBytes_Aes(data, keys[0], keys[1]);
-            }
-            catch (CryptographicException) { }
-            catch (ArgumentNullException) { }
+            encData = EncryptStringToBytes_Aes(data, keys[0], keys[1]);
 
             return encData;
         }
 
         public string Decrypt(string key, string data)
         {
-            string decData = null;
             byte[][] keys = GetHashKeys(key);
 
-            try
-            {
-                decData = DecryptStringFromBytes_Aes(data, keys[0], keys[1]);
-            }
-            catch (CryptographicException) { }
-            catch (ArgumentNullException) { }
+            string decData = DecryptStringFromBytes_Aes(data, keys[0], keys[1]);
 
             return decData;
         }

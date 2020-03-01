@@ -2,12 +2,16 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Win32;
 using System.IO;
+using System;
 
 namespace PasswordStore
 {
     internal class MainWindowViewModel: INotifyPropertyChanged
     {
         private string _plainText = "";
+
+        private const string InitialDirectory = @"c:\passwords";
+        private const string Filter = "PasswordStore files (*.pwdf)|*.pwdf| All files (*.*)|*.*";
 
         public bool IsSaved { get; private set; } = false;
 
@@ -34,7 +38,9 @@ namespace PasswordStore
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
                 DefaultExt = ".pwdf",
-                FileName = lastFileName
+                FileName = lastFileName,
+                InitialDirectory = InitialDirectory,
+                Filter = Filter
             };
             
             saveFileDialog.ShowDialog();
@@ -47,7 +53,15 @@ namespace PasswordStore
 
             lastFileName = saveFileDialog.FileName;
 
-            File.WriteAllText(lastFileName, securityController.Encrypt(masterPassword, PlainText));
+            try
+            {
+                File.WriteAllText(lastFileName, securityController.Encrypt(masterPassword, PlainText));
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Unknown error occured during encryption: {ex.Message}");
+                return;
+            }
 
             IsSaved = true;
         }
@@ -56,9 +70,10 @@ namespace PasswordStore
         {
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                DefaultExt = ".pwdf",
                 CheckFileExists = true,
-                FileName = lastFileName
+                FileName = lastFileName,
+                InitialDirectory = InitialDirectory,
+                Filter = Filter
             };
             
             openFileDialog.ShowDialog();
@@ -74,13 +89,16 @@ namespace PasswordStore
             }
 
             string text = File.ReadAllText(openFileDialog.FileName);
-            PlainText = securityController.Decrypt(masterPassword, text);
+            try
+            {
+                PlainText = securityController.Decrypt(masterPassword, text);
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Error: wrong master password.");
+                return;
+            }
             IsSaved = false;
-        }
-
-        public void Clear()
-        {
-            PlainText = string.Empty;
         }
 
         private string RunMasterPasswordRequest()
