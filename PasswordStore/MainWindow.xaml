@@ -49,7 +49,7 @@
         <Label Grid.Row="1" Margin="0,0,0,1" Grid.ColumnSpan="2">_To encrypt:</Label>
         <TextBox x:Name="tb" Grid.Row="2" Text="{Binding Path=PlainText, Mode= TwoWay}" Margin="0,0,-1,0" Grid.ColumnSpan="3"/>
 
-        <Button HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" Click="btnSave_Click" Width="100">
+        <Button HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" Click="btnSave_Click" Width="100" IsEnabled="{Binding Path=!IsSaved}">
             <AccessText>_Save</AccessText>
         </Button>
         <Button HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3" Click="btnClear_Click" Width="100">

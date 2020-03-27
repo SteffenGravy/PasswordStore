@@ -62,6 +62,7 @@ namespace PasswordStore
         {
             CheckIsSaved();
             mainWindowViewModel.PlainText = string.Empty;
+            mainWindowViewModel.IsSaved = true;
         }
 
         public void btnLoad_Click(object sender, RoutedEventArgs e)
@@ -155,14 +156,13 @@ namespace PasswordStore
             try
             {
                 File.WriteAllText(mainWindowViewModel.lastFileName, SecurityController.Encrypt(masterPassword, mainWindowViewModel.PlainText));
+                mainWindowViewModel.IsSaved = true;
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Unknown error occured during encryption: {ex.Message}");
+                MessageBox.Show($"Unknown error occured during encryption: {ex.Message}");
                 return;
             }
-
-            mainWindowViewModel.IsSaved = true;
         }
 
         public void LoadFile(string fileName)
@@ -177,10 +177,11 @@ namespace PasswordStore
             try
             {
                 mainWindowViewModel.PlainText = SecurityController.Decrypt(masterPassword, text);
+                mainWindowViewModel.IsSaved = true;
             }
             catch
             {
-                System.Windows.MessageBox.Show("Error: wrong master password.");
+                MessageBox.Show("Error: wrong master password.");
                 return;
             }
         }
